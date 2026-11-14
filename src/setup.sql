@@ -92,3 +92,63 @@ VALUES
 (3, 'Holiday Gift Donation',
  'Collect holiday gifts for children.',
  'Rexburg, Idaho', '2026-12-18');
+
+-- =====================================
+-- Category Table
+-- =====================================
+
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL UNIQUE
+);
+
+-- =====================================
+-- Project Category Relationship
+-- =====================================
+
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES project(project_id),
+
+    FOREIGN KEY (category_id)
+        REFERENCES category(category_id)
+);
+
+-- =====================================
+-- Sample Categories
+-- =====================================
+
+INSERT INTO category (name)
+VALUES
+('Construction'),
+('Environment'),
+('Community Service'),
+('Education'),
+('Health');
+
+-- =====================================
+-- Assign Categories to Projects
+-- =====================================
+
+INSERT INTO project_category (project_id, category_id)
+VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 3),
+(5, 1),
+(6, 2),
+(7, 2),
+(8, 4),
+(9, 2),
+(10, 4),
+(11, 3),
+(12, 3),
+(13, 3),
+(14, 5),
+(15, 3);
