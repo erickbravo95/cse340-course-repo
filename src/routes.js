@@ -3,7 +3,7 @@ import express from 'express';
 import { showOrganizationDetailsPage } from './controllers/organizations.js';
 import { showHomePage } from './controllers/index.js';
 import { showOrganizationsPage } from './controllers/organizations.js';
-import { showProjectsPage } from './controllers/projects.js';
+import { showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 import { showCategoriesPage } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
 
@@ -17,6 +17,6 @@ router.get('/categories', showCategoriesPage);
 // error-handling routes
 router.get('/test-error', testErrorPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
-
+router.get('/project/:id', showProjectDetailsPage);
 
 export default router;
