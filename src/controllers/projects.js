@@ -1,9 +1,16 @@
-// Import any needed model functions
-import { getUpcomingProjects, getProjectDetails } from '../models/projects.js';
+
+import {
+    getUpcomingProjects,
+    getProjectDetails
+} from '../models/projects.js';
+
+import {
+    getCategoriesByProjectId
+} from '../models/categories.js';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
-// Define any controller functions
+// Display upcoming projects
 const showProjectsPage = async (req, res) => {
     const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
     const title = 'Upcoming Service Projects';
@@ -11,13 +18,33 @@ const showProjectsPage = async (req, res) => {
     res.render('projects', { title, projects });
 };
 
-const showProjectDetailsPage = async (req, res) => {
-    const id = req.params.id;
-    const project = await getProjectDetails(id);
-    const title = project.title;
+// Display project details
+const showProjectDetailsPage = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const project = await getProjectDetails(id);
 
-    res.render('project', { title, project });
+        if (!project) {
+            return res.status(404).render('errors/404', {
+                title: 'Project Not Found'
+            });
+        }
+
+        const categories = await getCategoriesByProjectId(id);
+        const title = project.title;
+
+        res.render('project', {
+            title,
+            project,
+            categories
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
-// Export any controller functions
-export { showProjectsPage, showProjectDetailsPage };
+// Export controller functions
+export {
+    showProjectsPage,
+    showProjectDetailsPage
+};
